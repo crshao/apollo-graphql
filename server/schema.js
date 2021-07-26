@@ -14,7 +14,7 @@ const typeDefs = gql`
         location: String
         magnitude: Float
         when: String
-        time: String
+        cursor: String
     }
 
     type User {
