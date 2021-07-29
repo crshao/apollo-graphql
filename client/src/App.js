@@ -1,25 +1,79 @@
-import logo from './logo.svg';
+import React, { Fragment } from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 import './App.css';
+import QuakeTile from './components/quaketile';
+import Header from './components/header';
 
-function App() {
+const GET_QUAKES = gql`
+  query quakeList($after: String) {
+    quakes(after: $after) {
+      cursor
+      hasMore
+      quakes {
+        id
+        location
+        magnitude
+        when
+        cursor
+      }
+    }
+  }
+`;
+
+function Quakes() {
+  const { data, loading, error, fetchMore } = useQuery(GET_QUAKES);
+
+  if (loading) return  <p> Loading </p>;
+  if (error) return <p> ERROR </p>;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Fragment>
+      <Header />
+      <div className="main">
+        {data.quakes &&
+          data.quakes.quakes &&
+            data.quakes.quakes.map(quake => (
+              <QuakeTile
+                key={quake.id}
+                id={quake.id}
+                magnitude={quake.magnitude}
+                location={quake.location}
+                when={quake.when}
+                />
+            ))
+        }
+        {data.quakes &&
+          data.quakes.hasMore && (
+            <button
+              onClick={() =>
+                fetchMore({
+                  variables: {
+                    after: data.quakes.cursor,
+                  },
+                  updateQuery: (prev, { fetchMoreResult }) => {
+                    if (!fetchMoreResult) return prev;
+                    return {
+                      ...fetchMoreResult,
+                      quakes: {
+                        ...fetchMoreResult.quakes,
+                        quakes: [
+                          ...prev.quakes.quakes,
+                          ...fetchMoreResult.quakes.quakes
+                        ],
+                      },
+                    };
+                  },
+                })
+              }
+            >
+              Load More
+            </button>
+          )
+        }
+      </div>
+    </Fragment>
+  )
 }
 
-export default App;
+export default Quakes;

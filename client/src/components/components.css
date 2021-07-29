@@ -1,0 +1,15 @@
+.quaketile {
+    background: beige;
+    border: 2px solid lightblue;
+    width: 40%;
+    margin-bottom: 20px;
+}
+
+.header {
+    background: black;
+    color: white;
+}
+
+h1 {
+    margin: 0;
+}

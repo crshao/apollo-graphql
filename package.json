@@ -5,18 +5,27 @@
   "main": "index.js",
   "scripts": {
     "server": "cd server && nodemon index.js",
+    "react-start": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run react-start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
     "apollo-datasource": "^3.0.1",
     "apollo-datasource-rest": "^3.0.0",
+    "apollo-link-http": "^1.5.17",
     "apollo-server": "^3.0.0",
     "graphql": "^15.5.1",
+    "graphql-tag": "^2.12.5",
     "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.12"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0"
   }
 }
