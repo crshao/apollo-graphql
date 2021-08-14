@@ -52,7 +52,7 @@ type QuakeConnection { # add this below the Query type as an additional type.
         # if false, deleting record failed
         deleteRecord(recordId: ID!): RecordUpdateResponse!
 
-        login(email: String): String
+        login(email: String, password: String): String
     }
 
     type RecordUpdateResponse {

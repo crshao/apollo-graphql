@@ -1,5 +1,6 @@
 const { paginateResults } = require('./utils');
 const jwt = require('jsonwebtoken');
+// const { resolvers } = require('../client/src/schema');
 
 module.exports = {
     Query: {
@@ -31,8 +32,8 @@ module.exports = {
     //   me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
     },
     Mutation: {
-      login: async (_, { email }, { dataSources }) => {
-        const user = await dataSources.userAPI.getUser({ email });
+      login: async (_, { email, password }, { dataSources }) => {
+        const user = await dataSources.userAPI.getUser({ email, password });
         if (user)
         {
           const token = jwt.sign({ id: user.id, email: user.email},
